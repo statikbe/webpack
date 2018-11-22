@@ -45,7 +45,6 @@ mix
                     {
                         test: /\.font\.js/,
                         use: [
-                            'style-loader',
                             'css-loader',
                             'webfonts-loader'
                         ]
