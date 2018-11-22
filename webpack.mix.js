@@ -67,7 +67,7 @@ mix
     .sass(sourcePaths.css, publicPaths.css, { outputStyle: 'expanded' })
 
     .critical({
-        enabled: true,
+        enabled: mix.inProduction(),
         urls: [
             {
                 src: 'http://igkdyn.local.statik.be/docs/page.html',
