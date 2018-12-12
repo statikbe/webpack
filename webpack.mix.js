@@ -9,6 +9,8 @@ require('laravel-mix-critical');
 const sourcePath = process.env.npm_package_config_path_src;
 const publicPath = process.env.npm_package_config_path_public;
 
+const projectName = __dirname.split('/').pop();
+
 const sourcePaths = {
     js: path.join(sourcePath, 'js/main.js'),
     css: path.join(sourcePath, 'sass/main.scss'),
@@ -45,7 +47,6 @@ mix
                     {
                         test: /\.font\.js/,
                         use: [
-                            'style-loader',
                             'css-loader',
                             'webfonts-loader'
                         ]
@@ -65,13 +66,14 @@ mix
     //  CSS
     //
     .sass(sourcePaths.css, publicPaths.css, { outputStyle: 'expanded' })
+    .sourceMaps()
 
     .critical({
-        enabled: true,
+        enabled: mix.inProduction(),
         urls: [
             {
-                src: 'http://igkdyn.local.statik.be/docs/page.html',
-                dest: path.join(publicPaths.css, 'critical.min.css')
+                src: `http://${projectName}.local.statik.be/docs/critical.html`,
+                dest: path.join(publicPaths.css, 'critical.css')
             }
         ],
         options: {
