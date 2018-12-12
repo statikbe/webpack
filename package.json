@@ -30,7 +30,6 @@
     },
     "dependencies": {
         "jquery": "^3.3.1",
-        "parsleyjs": "^2.8.1",
-        "vue": "^2.5.17"
+        "parsleyjs": "^2.8.1"
     }
 }

@@ -66,13 +66,14 @@ mix
     //  CSS
     //
     .sass(sourcePaths.css, publicPaths.css, { outputStyle: 'expanded' })
+    .sourceMaps()
 
     .critical({
         enabled: mix.inProduction(),
         urls: [
             {
                 src: `http://${projectName}.local.statik.be/docs/critical.html`,
-                dest: path.join(publicPaths.css, 'critical.min.css')
+                dest: path.join(publicPaths.css, 'critical.css')
             }
         ],
         options: {
