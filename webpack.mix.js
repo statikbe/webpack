@@ -12,8 +12,8 @@ const publicPath = process.env.npm_package_config_path_public;
 const projectName = __dirname.split('/').pop();
 
 const sourcePaths = {
-    js: path.join(sourcePath, 'js/main.js'),
-    css: path.join(sourcePath, 'sass/main.scss'),
+    js: path.join(sourcePath, 'js'),
+    css: path.join(sourcePath, 'sass'),
     fonts: path.join(sourcePath, 'fonts'),
     docs: path.join(sourcePath, 'docs'),
     images: path.join(sourcePath, 'img'),
@@ -40,32 +40,41 @@ mix
             }
         }
     })
-    .webpackConfig(webpack => {
-        return {
-            module: {
-                rules: [
-                    {
-                        test: /\.font\.js/,
-                        use: [
-                            'css-loader',
-                            'webfonts-loader'
-                        ]
-                    }
-                ]
-            },
-        };
-    })
+    .webpackConfig(
+        webpack => {
+            return {
+                module: {
+                    rules: [
+                        {
+                            test: /\.font\.js/,
+                            use: [
+                                'css-loader',
+                                'webfonts-loader'
+                            ]
+                        }
+                    ]
+                },
+            };
+        },
+        plugins => new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery',
+            'window.$': 'jquery',
+        })
+    )
     .setPublicPath(publicPath)
-    .babelConfig({ 'presets': ['env'] })
+    .babelConfig({ 'presets': ['@babel/env'] })
 
     //  Javascript
     //
-    .js(sourcePaths.js, publicPaths.js)
-        .eslint({ cache: true })
+    .js(path.join(sourcePaths.js, 'main.js'), publicPaths.js)
+    .js(path.join(sourcePaths.js, 'docs.js'), publicPaths.js)
+    .eslint({ cache: true })
 
     //  CSS
     //
-    .sass(sourcePaths.css, publicPaths.css, { outputStyle: 'expanded' })
+    .sass(path.join(sourcePaths.css, 'main.scss'), publicPaths.css, { outputStyle: 'expanded' })
     .sourceMaps()
 
     .critical({
