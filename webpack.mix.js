@@ -30,6 +30,9 @@ const publicPaths = {
 };
 
 mix
+    .autoload({
+        jquery: ['$', 'window.jQuery',"jQuery","window.$","jquery","window.jquery"]
+    })
     .options({
         processCssUrls: false,
         autoprefixer: {
@@ -55,13 +58,7 @@ mix
                     ]
                 },
             };
-        },
-        plugins => new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            'window.$': 'jquery',
-        })
+        }
     )
     .setPublicPath(publicPath)
     .babelConfig({ 'presets': ['@babel/env'] })
