@@ -1,10 +1,16 @@
 const path = require('path');
-
+const glob = require('glob-all');
 const mix = require('laravel-mix');
 
 require('laravel-mix-purgecss');
 require('laravel-mix-eslint');
 require('laravel-mix-critical');
+
+// const PATHS = {
+//     templates: path.join(__dirname, 'templates'),
+//     modules: path.join(__dirname, 'modules'),
+//     takeoff: path.join(__dirname, 'takeoff', '/js'),
+// };
 
 const sourcePath = process.env.npm_package_config_path_src;
 const publicPath = process.env.npm_package_config_path_public;
@@ -89,8 +95,13 @@ mix
         },
     })
     // .purgeCss({
-    //     enabled: false,
-    //     extensions: ['html', 'js', 'php', 'vue', 'twig', 'scss', 'css'],
+    //     enabled: true,
+    //     paths: glob.sync([
+    //         `${PATHS.templates}/**/*`,
+    //     ], { nodir: true }),
+    //     extensions: ['html', 'js', 'php', 'vue', 'twig', 'scss', 'css', 'svg', 'md'],
+    //     extractorPattern: /[a-zA-Z0-9-:@_/]+/g,
+    //     whitelistPatterns: [],
     // })
 
     //  Fonts
