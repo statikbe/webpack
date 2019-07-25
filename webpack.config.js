@@ -3,7 +3,6 @@ const path = require('path');
 const webpack = require('webpack');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CopyPlugin = require('copy-webpack-plugin');
 
@@ -20,6 +19,16 @@ module.exports = env => {
         },
         module: {
             rules: [
+                {
+                    test: /\.m?js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            'presets': ['@babel/env']
+                        }
+                    }
+                },
                 {
                   test: /\.scss$/,
                   use: [
@@ -44,6 +53,10 @@ module.exports = env => {
                         'css-loader',
                         'webfonts-loader'
                     ]
+                },
+                {
+                    test: /\.vue$/,
+                    loader: 'vue-loader',
                 }
             ]
         },
@@ -73,14 +86,7 @@ module.exports = env => {
             new ImageminPlugin({
                 test: /\.(jpe?g|png|gif|svg)$/i
             })
-        ],
-        optimization: {
-            minimizer: [
-                new UglifyJsPlugin({
-                    test: /\.js(\?.*)?$/i
-                })
-            ]
-        }
+        ]
     };
 };
 
