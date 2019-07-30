@@ -2,6 +2,7 @@ const path = require('path');
 
 const webpack = require('webpack');
 
+//  Plugins
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CopyPlugin = require('copy-webpack-plugin');
@@ -13,16 +14,21 @@ module.exports = env => {
     const isDevelopment = env.NODE_ENV === 'development';
 
     return {
+
         mode: env.NODE_ENV,
+
         entry: {
             'main': getSourcePath('js/main.js'),
             'docs': getSourcePath('js/docs.js')
         },
+
         output: {
             path: getPublicPath(),
             filename: 'js/[name].js'
         },
+
         module: {
+
             rules: [
                 {
                     test: /\.m?js$/,
@@ -70,15 +76,19 @@ module.exports = env => {
                 }
             ]
         },
+
         plugins: [
+
             new webpack.ProvidePlugin({
                 $: 'jquery',
                 jQuery: 'jquery',
                 Vue: [ 'vue/dist/vue.esm.js', 'default' ]
             }),
+
             new MiniCssExtractPlugin({
                 filename: isDevelopment ? 'css/[name].css' : 'css/[name].min.css'
             }),
+
             new CopyPlugin([
                 {
                     from: getSourcePath('img'),
@@ -93,20 +103,40 @@ module.exports = env => {
                 //     to: getPublicPath('fonts')
                 // }
             ]),
+
             new ImageminPlugin({
                 test: /\.(jpe?g|png|gif|svg)$/i
             })
         ],
+
         optimization: {
-            minimizer: [ new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin() ]
+
+            minimizer: [
+
+                new TerserJSPlugin({
+                    terserOptions: {
+                        output: {
+                            comments: false
+                        }
+                    }
+                }),
+                
+                new OptimizeCSSAssetsPlugin()
+            ]
+        },
+
+        stats: {
+            children: false
         }
     };
 };
 
 function getSourcePath() {
+
     return path.resolve(process.env.npm_package_config_path_src, ...arguments);
 }
 
 function getPublicPath() {
+
     return path.resolve(process.env.npm_package_config_path_public, ...arguments);
 }
