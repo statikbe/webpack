@@ -5,17 +5,22 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const CopyPlugin = require('copy-webpack-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = env => {
+
+    const isDevelopment = env.NODE_ENV === 'development';
+
     return {
         mode: env.NODE_ENV,
         entry: {
-            'js/main.js': getSourcePath('js/main.js'),
-            'js/docs.js': getSourcePath('js/docs.js')
+            'main': getSourcePath('js/main.js'),
+            'docs': getSourcePath('js/docs.js')
         },
         output: {
             path: getPublicPath(),
-            filename: '[name]'
+            filename: 'js/[name].js'
         },
         module: {
             rules: [
@@ -25,22 +30,27 @@ module.exports = env => {
                     use: {
                         loader: 'babel-loader',
                         options: {
-                            'presets': ['@babel/env']
+                            presets: [ '@babel/env' ]
                         }
                     }
                 },
                 {
                   test: /\.scss$/,
                   use: [
-                    'style-loader',
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {}
+                    },
                     {
                         loader: 'css-loader',
                         options: {
                             url: false
                         }
                     },
-                    'sass-loader'
+                    {
+                        loader: 'sass-loader',
+                        options: {}
+                    }
                   ]
                 },
                 {
@@ -64,10 +74,10 @@ module.exports = env => {
             new webpack.ProvidePlugin({
                 $: 'jquery',
                 jQuery: 'jquery',
-                Vue: ['vue/dist/vue.esm.js', 'default']
+                Vue: [ 'vue/dist/vue.esm.js', 'default' ]
             }),
             new MiniCssExtractPlugin({
-                filename: 'css/main.css'
+                filename: isDevelopment ? 'css/[name].css' : 'css/[name].min.css'
             }),
             new CopyPlugin([
                 {
@@ -86,7 +96,10 @@ module.exports = env => {
             new ImageminPlugin({
                 test: /\.(jpe?g|png|gif|svg)$/i
             })
-        ]
+        ],
+        optimization: {
+            minimizer: [ new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin() ]
+        }
     };
 };
 
