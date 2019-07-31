@@ -13,7 +13,11 @@
         "clean": "rm -rf public/css public/docs public/fonts public/img public/js public/**/*.js public/**/*.css",
         "takeoff:install": "git clone --depth=1 --branch=master https://github.com/statikbe/takeoff.git $npm_package_config_path_src && rm -rf $npm_package_config_path_src/.git"
     },
-    "precommit": [ "clean", "dev", "prod" ],
+    "precommit": [
+        "clean",
+        "dev",
+        "prod"
+    ],
     "devDependencies": {
         "@babel/core": "^7.5.5",
         "@babel/preset-env": "^7.5.5",

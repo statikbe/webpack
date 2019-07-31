@@ -19,7 +19,8 @@ module.exports = env => {
 
         entry: {
             'main': getSourcePath('js/main.js'),
-            'docs': getSourcePath('js/docs.js')
+            'docs': getSourcePath('js/docs.js'),
+            'assets': getSourcePath('assets.js')
         },
 
         output: {
