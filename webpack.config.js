@@ -19,8 +19,7 @@ module.exports = env => {
 
         entry: {
             'main': getSourcePath('js/main.js'),
-            'docs': getSourcePath('js/docs.js'),
-            'assets': getSourcePath('assets.js')
+            'docs': getSourcePath('js/docs.js')
         },
 
         output: {
@@ -34,12 +33,17 @@ module.exports = env => {
                 {
                     test: /\.m?js$/,
                     exclude: /node_modules/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [ '@babel/env' ]
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: {
+                                cacheDirectory: true
+                            }
+                        },
+                        {
+                            loader: 'eslint-loader'
                         }
-                    }
+                    ]
                 },
                 {
                   test: /\.scss$/,
