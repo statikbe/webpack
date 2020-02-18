@@ -9,6 +9,7 @@
     "scripts": {
         "dev": "node_modules/webpack/bin/webpack.js --env.NODE_ENV=development --progress --hide-modules",
         "watch": "npm run dev -- --watch",
+        "hot": "webpack-dev-server --env.NODE_ENV=development --inline --hot",
         "prod": "node_modules/webpack/bin/webpack.js --env.NODE_ENV=production --no-progress --hide-modules",
         "clean": "rm -rf public/css public/docs public/fonts public/img public/js public/**/*.js public/**/*.css",
         "takeoff:install": "git clone --depth=1 --branch=master https://github.com/statikbe/takeoff.git $npm_package_config_path_src && rm -rf $npm_package_config_path_src/.git"
@@ -19,6 +20,7 @@
         "babel-loader": "^8.0.6",
         "copy-webpack-plugin": "^5.0.3",
         "css-loader": "^3.1.0",
+        "dotenv": "^8.2.0",
         "eslint": "4.19.1",
         "eslint-loader": "^2.1.1",
         "eslint-plugin-vue": "^4.7.1",
@@ -33,7 +35,8 @@
         "vue-template-compiler": "^2.5.22",
         "webfonts-loader": "ariesjia/webfonts-loader",
         "webpack": "^4.37.0",
-        "webpack-cli": "^3.3.6"
+        "webpack-cli": "^3.3.6",
+        "webpack-dev-server": "^3.10.3"
     },
     "dependencies": {
         "highlight.js": "9.12.0",
