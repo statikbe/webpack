@@ -9,6 +9,9 @@ const CopyPlugin = require('copy-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
+// Load environment variables from .env file
+require('dotenv').config();
+
 module.exports = env => {
 
     const isDevelopment = env.NODE_ENV === 'development';
@@ -46,23 +49,23 @@ module.exports = env => {
                     ]
                 },
                 {
-                  test: /\.scss$/,
-                  use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {}
-                    },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            url: false
+                    test: /\.scss$/,
+                    use: [
+                        {
+                            loader: MiniCssExtractPlugin.loader,
+                            options: {}
+                        },
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                url: false
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {}
                         }
-                    },
-                    {
-                        loader: 'sass-loader',
-                        options: {}
-                    }
-                  ]
+                    ]
                 },
                 {
                     test: /\.css$/,
@@ -125,14 +128,29 @@ module.exports = env => {
                         }
                     }
                 }),
-                
+
                 new OptimizeCSSAssetsPlugin()
             ]
         },
 
         stats: {
             children: false
-        }
+        },
+        // Enable weback Hot Module Replacement
+        devServer: {
+            // add any additional files in th js/ folder
+            contentBase: [getSourcePath('js/main.js')],
+            // variables from .env file
+            host: process.env.DEV_SERVER_HOST,
+            port: process.env.DEV_SERVER_PORT,
+            https: true,
+            // Fix invalid host header issue
+            allowedHosts: ['.statik.be'],
+            // Fix font loading issue
+            headers:{
+                'Access-Control-Allow-Origin': '*'
+            }
+        },
     };
 };
 
